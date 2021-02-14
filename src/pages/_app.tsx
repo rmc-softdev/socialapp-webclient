@@ -75,6 +75,7 @@ function MyApp({ Component, pageProps }: any) {
         <Component {...pageProps} />
       </ThemeProvider>
     </Provider>
+    
   );
 }
 
