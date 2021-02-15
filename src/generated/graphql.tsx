@@ -14,23 +14,14 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  hello: Scalars['String'];
+  me?: Maybe<User>;
   posts: Array<Post>;
   post?: Maybe<Post>;
-  me?: Maybe<User>;
 };
 
 
 export type QueryPostArgs = {
   id: Scalars['Float'];
-};
-
-export type Post = {
-  __typename?: 'Post';
-  id: Scalars['Float'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  title: Scalars['String'];
 };
 
 export type User = {
@@ -41,13 +32,32 @@ export type User = {
   username: Scalars['String'];
 };
 
+export type Post = {
+  __typename?: 'Post';
+  id: Scalars['Float'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  title: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  register: UserResponse;
+  login: UserResponse;
+  logout: Scalars['Boolean'];
   createPost: Post;
   updatePost?: Maybe<Post>;
   deletePost: Scalars['Boolean'];
-  register: UserResponse;
-  login: UserResponse;
+};
+
+
+export type MutationRegisterArgs = {
+  options: UsernamePasswordInput;
+};
+
+
+export type MutationLoginArgs = {
+  options: UsernamePasswordInput;
 };
 
 
@@ -64,16 +74,6 @@ export type MutationUpdatePostArgs = {
 
 export type MutationDeletePostArgs = {
   id: Scalars['Float'];
-};
-
-
-export type MutationRegisterArgs = {
-  options: UsernamePasswordInput;
-};
-
-
-export type MutationLoginArgs = {
-  options: UsernamePasswordInput;
 };
 
 export type UserResponse = {
@@ -115,6 +115,14 @@ export type LoginMutation = (
       & RegularUserFragment
     )> }
   ) }
+);
+
+export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LogoutMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'logout'>
 );
 
 export type RegisterMutationVariables = Exact<{
@@ -170,6 +178,15 @@ export const LoginDocument = gql`
 
 export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument);
+};
+export const LogoutDocument = gql`
+    mutation logout {
+  logout
+}
+    `;
+
+export function useLogoutMutation() {
+  return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
 };
 export const RegisterDocument = gql`
     mutation Register($username: String!, $password: String!) {
