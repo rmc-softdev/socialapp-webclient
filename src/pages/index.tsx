@@ -6,7 +6,11 @@ import { Link } from "@chakra-ui/core";
 import NextLink from "next/link";
 
 const Index = () => {
-  const [{ data }] = usePostsQuery();
+  const [{ data }] = usePostsQuery({
+    variables: {
+      limit: 10
+    }
+  });
   return (
     <Layout>
       <NextLink href="/create-post">
@@ -16,7 +20,9 @@ const Index = () => {
       {!data ? (
         <div>loading...</div>
       ) : (
-        data.posts.map((p) => <div key={p.id}>{p.title}</div>)
+        <Stack spacing={8}> 
+        {data.posts.map((p) => <div key={p.id}>{p.title}</div>)}
+        </Stack>
       )}
     </Layout>
   );
